@@ -75,32 +75,28 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven3-plugin</artifactId>
-        <version>1.10.6</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <id>deploy</id>
                         <phase>integration-test</phase>
                         <goals>
-                            <goal>redeploy</goal>
+                            <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <executable>${glassfish.home}/glassfish/bin/asadmin</executable>
+                            <arguments>
+                                <argument>deploy</argument>
+                                <argument>--force</argument>
+                                <argument>--contextroot</argument>
+                                <argument>restdemo</argument>
+                                <argument>${project.build.directory}/${project.build.finalName}.war</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <container>
-                        <containerId>glassfish7x</containerId>
-                        <type>installed</type>
-                        <home>${glassfish.home}</home>
-                    </container>
-                    <configuration>
-                        <type>existing</type>
-                        <home>${glassfish.home}/glassfish/domains</home>
-                        <properties>
-                            <cargo.glassfish.domain.name>domain1</cargo.glassfish.domain.name>
-                        </properties>
-                    </configuration>
-                </configuration>
             </plugin>
         </plugins>
     </build>
